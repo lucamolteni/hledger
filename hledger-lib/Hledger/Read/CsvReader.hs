@@ -177,10 +177,10 @@ parseCsv path csvdata =
     "-" -> liftM (parseCSV "(stdin)") getContents
     _   -> return $ parseCSV path csvdata
 
-parseCassava :: FilePath -> String -> Either String [Record]
+parseCassava :: FilePath -> String -> Either String CSV
 parseCassava path content =  fmap fromCassavaToCSV $ DCSV.decode DCSV.NoHeader (C.pack content)
 
-fromCassavaToCSV :: (V.Vector (V.Vector C.ByteString)) -> [Record]
+fromCassavaToCSV :: (V.Vector (V.Vector C.ByteString)) -> CSV
 fromCassavaToCSV records = V.toList (V.map toCSVRecord records)
     where toCSVRecord fields = V.toList (V.map (C.unpack) fields)
 
