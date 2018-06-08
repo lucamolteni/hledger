@@ -56,9 +56,9 @@ import Safe
 import System.Directory (doesFileExist)
 import System.FilePath
 import Test.HUnit hiding (State)
-import Text.CSV (parseCSV, CSV)
+import Text.CSV (parseCSV, CSV, Record, Field)
 import qualified Data.Csv as DCSV
-import Data.Vector (Vector)
+import qualified Data.Vector as V
 import Text.Megaparsec hiding (parse)
 import Text.Megaparsec.Char
 import qualified Text.Parsec as Parsec
@@ -177,8 +177,13 @@ parseCsv path csvdata =
     "-" -> liftM (parseCSV "(stdin)") getContents
     _   -> return $ parseCSV path csvdata
 
-parseCassava :: FilePath -> String -> Either String (Vector (Vector C.ByteString))
-parseCassava path content =  DCSV.decode DCSV.NoHeader (C.pack content)
+parseCassava :: FilePath -> String -> Either String [Record]
+parseCassava path content =  fmap fromCassavaToCSV $ DCSV.decode DCSV.NoHeader (C.pack content)
+
+fromCassavaToCSV :: (V.Vector (V.Vector C.ByteString)) -> [Record]
+fromCassavaToCSV records = V.toList (V.map toCSVRecord records)
+    where toCSVRecord fields = V.toList (V.map (C.unpack) fields)
+
 
 -- | Return the cleaned up and validated CSV data (can be empty), or an error.
 validateCsv :: Int -> Either Parsec.ParseError CSV -> Either String [CsvRecord]
