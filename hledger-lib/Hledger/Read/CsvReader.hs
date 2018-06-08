@@ -44,6 +44,7 @@ import qualified Data.Set as S
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
+import qualified Data.ByteString.Lazy.Char8 as C
 import Data.Time.Calendar (Day)
 #if MIN_VERSION_time(1,5,0)
 import Data.Time.Format (parseTimeM, defaultTimeLocale)
@@ -56,7 +57,8 @@ import System.Directory (doesFileExist)
 import System.FilePath
 import Test.HUnit hiding (State)
 import Text.CSV (parseCSV, CSV)
-import qualified Data.Csv as DSCV
+import qualified Data.Csv as DCSV
+import Data.Vector (Vector)
 import Text.Megaparsec hiding (parse)
 import Text.Megaparsec.Char
 import qualified Text.Parsec as Parsec
@@ -175,9 +177,8 @@ parseCsv path csvdata =
     "-" -> liftM (parseCSV "(stdin)") getContents
     _   -> return $ parseCSV path csvdata
 
-parseCsv2 :: FilePath -> String -> IO (Either Parsec.ParseError CSV)
-parseCsv2 = undefined
-
+parseCassava :: FilePath -> String -> Either String (Vector (Vector C.ByteString))
+parseCassava path content =  DCSV.decode DCSV.NoHeader (C.pack content)
 
 -- | Return the cleaned up and validated CSV data (can be empty), or an error.
 validateCsv :: Int -> Either Parsec.ParseError CSV -> Either String [CsvRecord]

@@ -49,6 +49,7 @@ dependencies:
 - containers
 - csv
 - cassava
+- vector
 - data-default >=0.5
 - Decimal
 - deepseq
