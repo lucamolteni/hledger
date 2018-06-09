@@ -56,7 +56,7 @@ import Safe
 import System.Directory (doesFileExist)
 import System.FilePath
 import Test.HUnit hiding (State)
-import Text.CSV (parseCSV, CSV, Record, Field)
+import Text.CSV (CSV, Record, Field)
 import qualified Data.Csv as DCSV
 import qualified Data.Vector as V
 import Text.Megaparsec hiding (parse)
@@ -178,8 +178,8 @@ readJournalFromCsv mrulesfile csvfile csvdata =
 parseCsv :: FilePath -> String -> IO (Either Parsec.ParseError CSV)
 parseCsv path csvdata =
   case path of
-    "-" -> liftM (parseCSV "(stdin)") getContents
-    _   -> return $ parseCSV path csvdata
+    "-" -> liftM (parseCassava "(stdin)") getContents
+    _   -> return $ parseCassava path csvdata
 
 parseCassava :: FilePath -> String -> Either Parsec.ParseError CSV
 parseCassava path content =
