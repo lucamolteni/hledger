@@ -59,7 +59,8 @@ import System.Directory (doesFileExist)
 import System.FilePath
 import Test.HUnit hiding (State)
 import qualified Data.Csv as DCSV
-import qualified Data.Vector as V
+import Data.Vector (Vector)
+import Data.Foldable
 import Text.Megaparsec hiding (parse)
 import Text.Megaparsec.Char
 import qualified Text.Parsec as Parsec
@@ -195,10 +196,9 @@ parseCassava path content =
         Right a   -> Right a
     where parseResult = fmap fromCassavaToCSV $ DCSV.decode DCSV.NoHeader (C.pack content)
 
-fromCassavaToCSV :: (V.Vector (V.Vector C.ByteString)) -> CSV
-fromCassavaToCSV records = V.toList (V.map toCSVRecord records)
-    where toCSVRecord fields = V.toList (V.map (C.unpack) fields)
-
+fromCassavaToCSV :: (Vector (Vector C.ByteString)) -> CSV
+fromCassavaToCSV records = toList (toCSVRecord <$> records)
+    where toCSVRecord fields = toList (C.unpack <$> fields)
 
 toErrorMessage :: String -> Parsec.ParseError
 toErrorMessage msg = Parsec.newErrorMessage (Parsec.Message msg) (Parsec.newPos "" 0 0)
