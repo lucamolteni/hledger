@@ -62,12 +62,16 @@ import qualified Data.Vector as V
 import Text.Megaparsec hiding (parse)
 import Text.Megaparsec.Char
 import qualified Text.Parsec as Parsec
+import qualified Text.Parsec.Error as Parsec
+import qualified Text.Parsec.Pos as Parsec
 import Text.Printf (printf)
 
 import Hledger.Data
 import Hledger.Utils.UTF8IOCompat (getContents)
 import Hledger.Utils
 import Hledger.Read.Common (Reader(..),InputOpts(..),amountp, statusp, genericSourcePos)
+
+import Data.Either
 
 
 reader :: Reader
@@ -177,12 +181,20 @@ parseCsv path csvdata =
     "-" -> liftM (parseCSV "(stdin)") getContents
     _   -> return $ parseCSV path csvdata
 
-parseCassava :: FilePath -> String -> Either String CSV
-parseCassava path content =  fmap fromCassavaToCSV $ DCSV.decode DCSV.NoHeader (C.pack content)
+parseCassava :: FilePath -> String -> Either Parsec.ParseError CSV
+parseCassava path content =
+    case parseResult of
+        Left  msg -> Left $ toErrorMessage msg
+        Right a   -> Right a
+    where parseResult = fmap fromCassavaToCSV $ DCSV.decode DCSV.NoHeader (C.pack content)
 
 fromCassavaToCSV :: (V.Vector (V.Vector C.ByteString)) -> CSV
 fromCassavaToCSV records = V.toList (V.map toCSVRecord records)
     where toCSVRecord fields = V.toList (V.map (C.unpack) fields)
+
+
+toErrorMessage :: String -> Parsec.ParseError
+toErrorMessage msg = Parsec.newErrorMessage (Parsec.Message msg) (Parsec.newPos "" 0 0)
 
 
 -- | Return the cleaned up and validated CSV data (can be empty), or an error.
