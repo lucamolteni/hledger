@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c851bb51d0ea8b2b7c0d7c36db0a7d1cc44525220d190a6c3913f5f1cfa282c8
+-- hash: 483d1133badca76bcc7347b28dd5bafffba4c7882c95e59753ab97a4d2eaa930
 
 name:           hledger-lib
 version:        1.9.99
@@ -112,7 +112,6 @@ library
     , cassava
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , deepseq
     , directory
@@ -135,7 +134,6 @@ library
     , transformers >=0.2
     , uglymemo
     , utf8-string >=0.3.5
-    , vector
   if (!impl(ghc >= 8.0))
     build-depends:
         semigroups ==0.18.*
@@ -210,7 +208,6 @@ test-suite doctests
     , cassava
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , deepseq
     , directory
@@ -234,7 +231,6 @@ test-suite doctests
     , transformers >=0.2
     , uglymemo
     , utf8-string >=0.3.5
-    , vector
   if (!impl(ghc >= 8.0))
     build-depends:
         semigroups ==0.18.*
@@ -308,7 +304,6 @@ test-suite easytests
     , cassava
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , deepseq
     , directory
@@ -333,7 +328,6 @@ test-suite easytests
     , transformers >=0.2
     , uglymemo
     , utf8-string >=0.3.5
-    , vector
   if (!impl(ghc >= 8.0))
     build-depends:
         semigroups ==0.18.*
@@ -407,7 +401,6 @@ test-suite hunittests
     , cassava
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , deepseq
     , directory
@@ -433,7 +426,6 @@ test-suite hunittests
     , transformers >=0.2
     , uglymemo
     , utf8-string >=0.3.5
-    , vector
   if (!impl(ghc >= 8.0))
     build-depends:
         semigroups ==0.18.*
