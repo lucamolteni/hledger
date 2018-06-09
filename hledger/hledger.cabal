@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9c5b2134da8c5338d453b421424d33bf6ad43c1c12eca02dcd6711b23d7ae77a
+-- hash: 458d82d7653efebaccc25e3ca0c28dea56d0d4bfbc0b71b839dc452e25df8ba6
 
 name:           hledger
 version:        1.9.99
@@ -120,7 +120,6 @@ library
     , bytestring
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , directory
     , file-embed >=0.0.10
@@ -172,7 +171,6 @@ executable hledger
     , bytestring
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , directory
     , file-embed >=0.0.10
@@ -226,7 +224,6 @@ test-suite test
     , bytestring
     , cmdargs >=0.10
     , containers
-    , csv
     , data-default >=0.5
     , directory
     , file-embed >=0.0.10
@@ -280,7 +277,6 @@ benchmark bench
     , cmdargs >=0.10
     , containers
     , criterion
-    , csv
     , data-default >=0.5
     , directory
     , file-embed >=0.0.10

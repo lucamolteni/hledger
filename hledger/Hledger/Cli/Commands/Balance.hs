@@ -258,7 +258,6 @@ import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import System.Console.CmdArgs.Explicit as C
 import Lucid as L
-import Text.CSV
 import Test.HUnit
 import Text.Printf (printf)
 import Text.Tabular as T
@@ -267,6 +266,7 @@ import Text.Tabular as T
 import Hledger
 import Hledger.Cli.CliOptions
 import Hledger.Cli.Utils
+import Hledger.Read.CsvReader (CSV, printCSV)
 
 
 -- | Command line options for this command.
