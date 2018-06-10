@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 143218c34059f432ee1d2833a6fe8f6dbf6b2b7c6e71045bc848160cd398a18c
+-- hash: 7908571712de0b5fcb6d61b92342f9c34dfa72092e4269fa762069849169bc40
 
 name:           hledger-lib
 version:        1.9.99
@@ -129,6 +129,7 @@ library
     , regex-tdfa
     , safe >=0.2
     , split >=0.1
+    , string-conversions
     , tabular >=0.2
     , text >=1.2
     , time >=1.5
@@ -227,6 +228,7 @@ test-suite doctests
     , regex-tdfa
     , safe >=0.2
     , split >=0.1
+    , string-conversions
     , tabular >=0.2
     , text >=1.2
     , time >=1.5
@@ -325,6 +327,7 @@ test-suite easytests
     , regex-tdfa
     , safe >=0.2
     , split >=0.1
+    , string-conversions
     , tabular >=0.2
     , text >=1.2
     , time >=1.5
@@ -422,6 +425,7 @@ test-suite hunittests
     , regex-tdfa
     , safe >=0.2
     , split >=0.1
+    , string-conversions
     , tabular >=0.2
     , test-framework
     , test-framework-hunit
