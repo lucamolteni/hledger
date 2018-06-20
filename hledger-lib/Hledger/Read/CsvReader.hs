@@ -81,6 +81,13 @@ type Record = [Field]
 
 type Field = String
 
+
+type CSVText = [RecordText]
+
+type RecordText = [FieldText]
+
+type FieldText = Text
+
 data CSVError = CSVError (ParseError Word8 CassavaMP.ConversionError)
     deriving Show
 
@@ -213,10 +220,34 @@ printCSV records = unlines (printRecord `map` records)
           escape x = [x]
           unlines = concat . intersperse "\n"
 
+printCSVT :: [[Text]] -> Text
+printCSVT records = unlines (printRecord `map` records)
+    where printRecord = T.concat . intersperse "," . map printField
+          printField f = T.concat ["\"", (escape f), "\""]
+          escape "\"" = "\"\""
+          escape x = x
+          unlines = T.concat . intersperse "\n"
+
 -- | Return the cleaned up and validated CSV data (can be empty), or an error.
 validateCsv :: Int -> Either CSVError CSV -> Either String [CsvRecord]
 validateCsv _ (Left e) = Left $ show e
 validateCsv numhdrlines (Right rs) = validate $ drop numhdrlines $ filternulls rs
+  where
+    filternulls = filter (/=[""])
+    validate [] = Right []
+    validate rs@(first:_)
+      | isJust lessthan2 = let r = fromJust lessthan2 in Left $ printf "CSV record %s has less than two fields" (show r)
+      | isJust different = let r = fromJust different in Left $ printf "the first CSV record %s has %d fields but %s has %d" (show first) length1 (show r) (length r)
+      | otherwise        = Right rs
+      where
+        length1   = length first
+        lessthan2 = headMay $ filter ((<2).length) rs
+        different = headMay $ filter ((/=length1).length) rs
+
+-- | Return the cleaned up and validated CSV data (can be empty), or an error.
+validateCsvText :: Int -> Either CSVError CSVText -> Either String [CsvRecordText]
+validateCsvText _ (Left e) = Left $ show e
+validateCsvText numhdrlines (Right rs) = validate $ drop numhdrlines $ filternulls rs
   where
     filternulls = filter (/=[""])
     validate [] = Right []
@@ -650,6 +681,7 @@ regexp = do
 -- Converting CSV records to journal transactions
 
 type CsvRecord = [String]
+type CsvRecordText = [Text]
 
 -- Convert a CSV record to a transaction using the rules, or raise an
 -- error if the data can not be parsed.
